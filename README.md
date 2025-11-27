@@ -24,9 +24,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v6
       - name: package-version-to-git-tag
         uses: step-security/git-tag-action@v2
         with:
@@ -61,9 +61,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
       - name: setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v6
         with:
           node-version: 14.x
           registry-url: 'https://npm.pkg.github.com'
@@ -90,10 +90,6 @@ jobs:
           git_tag_prefix: "v"
 ```
 
-For more details, see following example
-
-- [azu/npm-github-package-example: npm registry to GitHub Package Registry example.](https://github.com/azu/npm-github-package-example)
-
 ## Options
 
 ```yaml
@@ -115,21 +111,6 @@ inputs:
     description: 'GitHub repository path. Example) azu/test'
     required: true
 ```
-
-## Release
-
-1. https://github.com/step-security/git-tag-action
-2. Create new tag like "v2.0.0"
-3. CI publish "v2.0.0", "v2.0", and "v2"
-
-## CHANGELOG
-
-- 2.0.0: tag is annotated tag instead of lightweight tag
-    - Rename `action-package-version-to-git-tag` to `git-tag-action`
-
-## Reference
-
-- [GitHub Actionsでnpmに自動でリリースするworkflowを作ってみた ｜ Developers.IO](https://dev.classmethod.jp/etc/github-actions-npm-automatic-release/)
 
 ## FAQ
 
