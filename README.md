@@ -1,4 +1,4 @@
-# step-security/git-tag-action [![Actions Status: Release](https://github.com/step-security/git-tag-action/workflows/Release/badge.svg)](https://github.com/step-security/git-tag-action/actions?query=workflow%3A"Release") [![Actions Status: test](https://github.com/step-security/git-tag-action/workflows/test/badge.svg)](https://github.com/step-security/git-tag-action/actions?query=workflow%3A"test")
+# step-security/git-tag-action [![Actions Status: test](https://github.com/step-security/git-tag-action/workflows/test/badge.svg)](https://github.com/step-security/git-tag-action/actions?query=workflow%3A"test")
 
 This action do `git tag ${version}` to the repository, but it is idempotent. 
 
@@ -43,7 +43,7 @@ jobs:
 2. [Manual] Push: `git push --tags` or Merge the Pull Request
 3. [CI] Publish to npm and Push a tag to GitHub  
 
-This Release flow is defined in [.github/workflows/publish.yml](./.github/workflows/publish.yml)
+This Release flow can be defined in `.github/workflows/publish.yml`
 
 ```yaml
 name: publish
