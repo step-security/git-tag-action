@@ -1,0 +1,24 @@
+name: test
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    name: "Test on Node:${{ matrix.node-version }} OS: ${{ matrix.os }}"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        node-version: [20]
+        os: [ubuntu-latest]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+      - name: setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install
+        run: yarn install
+      - name: Build
+        run: yarn run build
+
