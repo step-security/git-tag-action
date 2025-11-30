@@ -14128,74 +14128,59 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(7484));
 const github = __importStar(__nccwpck_require__(3228));
 const tag_1 = __nccwpck_require__(3283);
 const axios_1 = __importStar(__nccwpck_require__(7269));
-function validateSubscription() {
-    return __awaiter(this, void 0, void 0, function* () {
-        var _a;
-        const API_URL = `https://agent.api.stepsecurity.io/v1/github/${process.env.GITHUB_REPOSITORY}/actions/subscription`;
-        try {
-            yield axios_1.default.get(API_URL, { timeout: 3000 });
+async function validateSubscription() {
+    const API_URL = `https://agent.api.stepsecurity.io/v1/github/${process.env.GITHUB_REPOSITORY}/actions/subscription`;
+    try {
+        await axios_1.default.get(API_URL, { timeout: 3000 });
+    }
+    catch (error) {
+        if ((0, axios_1.isAxiosError)(error) && error.response?.status === 403) {
+            core.error("Subscription is not valid. Reach out to support@stepsecurity.io");
+            process.exit(1);
         }
-        catch (error) {
-            if ((0, axios_1.isAxiosError)(error) && ((_a = error.response) === null || _a === void 0 ? void 0 : _a.status) === 403) {
-                core.error("Subscription is not valid. Reach out to support@stepsecurity.io");
-                process.exit(1);
-            }
-            else {
-                core.info("Timeout or API not reachable. Continuing to next step.");
-            }
+        else {
+            core.info("Timeout or API not reachable. Continuing to next step.");
         }
-    });
+    }
 }
-function run() {
-    return __awaiter(this, void 0, void 0, function* () {
-        var _a;
-        try {
-            yield validateSubscription();
-            const token = core.getInput("github_token", {
-                required: true
-            });
-            const octokit = github.getOctokit(token);
-            const version = core.getInput("version", {
-                required: true
-            });
-            const prefix = (_a = core.getInput("git_tag_prefix")) !== null && _a !== void 0 ? _a : "";
-            const git_commit_sha = core.getInput("git_commit_sha", {
-                required: true
-            });
-            const github_repo = core.getInput("github_repo", {
-                required: true
-            });
-            const [owner, repo] = github_repo.split("/");
-            const gitTagName = `${prefix}${version}`;
-            yield (0, tag_1.tag)(octokit, {
-                owner,
-                repo,
-                gitName: github.context.actor,
-                gitEmail: `${github.context.actor}@users.noreply.github.com`,
-                gitTagName,
-                gitCommitSha: git_commit_sha || github.context.sha,
-                gitCommitMessage: `chore(release): ${gitTagName}`,
-                gitDate: new Date().toISOString()
-            });
-        }
-        catch (error) {
-            core.setFailed(error instanceof Error ? error.message : String(error));
-        }
-    });
+async function run() {
+    try {
+        await validateSubscription();
+        const token = core.getInput("github_token", {
+            required: true
+        });
+        const octokit = github.getOctokit(token);
+        const version = core.getInput("version", {
+            required: true
+        });
+        const prefix = core.getInput("git_tag_prefix") ?? "";
+        const git_commit_sha = core.getInput("git_commit_sha", {
+            required: true
+        });
+        const github_repo = core.getInput("github_repo", {
+            required: true
+        });
+        const [owner, repo] = github_repo.split("/");
+        const gitTagName = `${prefix}${version}`;
+        await (0, tag_1.tag)(octokit, {
+            owner,
+            repo,
+            gitName: github.context.actor,
+            gitEmail: `${github.context.actor}@users.noreply.github.com`,
+            gitTagName,
+            gitCommitSha: git_commit_sha || github.context.sha,
+            gitCommitMessage: `chore(release): ${gitTagName}`,
+            gitDate: new Date().toISOString()
+        });
+    }
+    catch (error) {
+        core.setFailed(error instanceof Error ? error.message : String(error));
+    }
 }
 run();
 
@@ -14240,21 +14225,12 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.tag = void 0;
 const core = __importStar(__nccwpck_require__(7484));
-const tag = (octokit, options) => __awaiter(void 0, void 0, void 0, function* () {
+const tag = async (octokit, options) => {
     core.debug("options:" + JSON.stringify(options, null, 4));
-    const tags = yield octokit.rest.repos.listTags({
+    const tags = await octokit.rest.repos.listTags({
         owner: options.owner,
         repo: options.repo
     });
@@ -14267,7 +14243,7 @@ const tag = (octokit, options) => __awaiter(void 0, void 0, void 0, function* ()
     }
     // logic
     try {
-        const refRes = yield octokit.rest.git.getRef({
+        const refRes = await octokit.rest.git.getRef({
             owner: options.owner,
             repo: options.repo,
             ref: `refs/tags/${options.gitTagName}`
@@ -14280,10 +14256,10 @@ const tag = (octokit, options) => __awaiter(void 0, void 0, void 0, function* ()
         return; // already tagged
     }
     catch (error) {
-        core.debug("expected error: " + (error === null || error === void 0 ? void 0 : error.message));
+        core.debug("expected error: " + error?.message);
         try {
             // https://stackoverflow.com/questions/15672547/how-to-tag-a-commit-in-api-using-curl-command
-            const tagRes = yield octokit.rest.git.createTag({
+            const tagRes = await octokit.rest.git.createTag({
                 tag: options.gitTagName,
                 object: options.gitCommitSha,
                 message: options.gitTagName,
@@ -14297,7 +14273,7 @@ const tag = (octokit, options) => __awaiter(void 0, void 0, void 0, function* ()
                 repo: options.repo
             });
             core.debug("create tag" + JSON.stringify(tagRes));
-            const refRes = yield octokit.rest.git.createRef({
+            const refRes = await octokit.rest.git.createRef({
                 owner: options.owner,
                 repo: options.repo,
                 sha: tagRes.data.sha,
@@ -14306,10 +14282,10 @@ const tag = (octokit, options) => __awaiter(void 0, void 0, void 0, function* ()
             core.debug("creat ref to tag:" + JSON.stringify(refRes));
         }
         catch (createTagError) {
-            core.warning("create tag and get unexpected error: " + (createTagError === null || createTagError === void 0 ? void 0 : createTagError.message));
+            core.warning("create tag and get unexpected error: " + createTagError?.message);
         }
     }
-});
+};
 exports.tag = tag;
 
 

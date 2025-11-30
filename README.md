@@ -28,7 +28,7 @@ jobs:
       - name: setup Node
         uses: actions/setup-node@v6
       - name: package-version-to-git-tag
-        uses: step-security/git-tag-action@v2
+        uses: step-security/git-tag-action@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           github_repo: ${{ github.repository }}
@@ -81,7 +81,7 @@ jobs:
       - name: package-version
         run: node -p -e '`PACKAGE_VERSION=${require("./package.json").version}`' >> $GITHUB_ENV
       - name: package-version-to-git-tag
-        uses: step-security/git-tag-action@v2
+        uses: step-security/git-tag-action@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           github_repo: ${{ github.repository }}
@@ -108,7 +108,7 @@ inputs:
     required: false
     default: ""
   github_repo:
-    description: 'GitHub repository path. Example) azu/test'
+    description: 'GitHub repository path'
     required: true
 ```
 

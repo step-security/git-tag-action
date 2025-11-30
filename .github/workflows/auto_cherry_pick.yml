@@ -15,6 +15,10 @@ on:
         description: "Run mode: cherry-pick or verify"
         required: false
         default: "cherry-pick"
+      package_manager:
+        description: "Specify package manager (npm or yarn)"
+        required: false
+        default: "yarn"
 
   pull_request:
     types: [labeled, opened, synchronize]
@@ -35,4 +39,5 @@ jobs:
       base_branch: ${{ inputs.base_branch }}
       script: ${{ inputs.script || 'yarn build' }}
       mode: ${{ github.event_name == 'pull_request' && 'verify' || inputs.mode }}
+      package_manager: ${{inputs.package_manager || 'yarn' }}
 
