@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [20]
+        node-version: [24]
         os: [ubuntu-latest]
     steps:
       - name: Harden the runner (Audit all outbound calls)

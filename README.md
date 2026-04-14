@@ -1,3 +1,5 @@
+[![StepSecurity Maintained Action](https://raw.githubusercontent.com/step-security/maintained-actions-assets/main/assets/maintained-action-banner.png)](https://docs.stepsecurity.io/actions/stepsecurity-maintained-actions)
+
 # step-security/git-tag-action [![Actions Status: test](https://github.com/step-security/git-tag-action/workflows/test/badge.svg)](https://github.com/step-security/git-tag-action/actions?query=workflow%3A"test")
 
 This action do `git tag ${version}` to the repository, but it is idempotent. 
