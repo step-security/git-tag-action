@@ -15,6 +15,10 @@ on:
         description: "Specify package manager (npm or yarn)"
         required: false
         default: "yarn"
+      node_version:
+        description: "Specify Node.js version (e.g., '18', '20', 'lts/*')"
+        required: false
+        default: "24"
 
   schedule:
     - cron: "0 0 * * 1"
@@ -26,6 +30,7 @@ jobs:
       base_branch: ${{ inputs.base_branch || 'main' }}
       script: ${{ inputs.script || 'yarn build' }}
       package_manager: ${{inputs.package_manager || 'yarn' }}
+      node_version: "${{ inputs.node_version || '24' }}"
 
 permissions:
   contents: write
