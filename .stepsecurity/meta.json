@@ -1,0 +1,18 @@
+{
+   "schema_version": "1",
+   "onboarding_type": "copied",
+   "archived": false,
+   "maintained_action_name": "step-security/git-tag-action",
+   "upstream_full_repo_name": "pkgdeps/git-tag-action",
+   "action_type": "node",
+   "last_release": {
+     "tag_name": "v3.0.1",
+     "created_at": "2026-04-20T05:17:19Z",
+     "published_at": "2026-04-21T00:05:17Z"
+   },
+   "sync": {
+     "ignore_presets": [
+       "defaults_v1"
+     ]
+   }
+ }
